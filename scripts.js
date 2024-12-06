@@ -1,23 +1,16 @@
-let currentIndex = 0;  // 当前显示的图片索引
-const images = document.querySelectorAll('.slider-images img');  // 获取所有图片
-const totalImages = images.length;  // 获取图片总数
-const sliderWrapper = document.querySelector('.slider-images');  // 获取图片容器
+let currentSlide = 0;
 
-// 切换图片函数
 function changeSlide(direction) {
-    currentIndex += direction;
+    const slides = document.querySelectorAll('.slider-images img');
+    currentSlide = (currentSlide + direction + slides.length) % slides.length;
 
-    // 如果到达最后一张图片，跳转到第一张
-    if (currentIndex < 0) {
-        currentIndex = totalImages - 1;
-    }
-
-    // 如果到达第一张图片，跳转到最后一张
-    if (currentIndex >= totalImages) {
-        currentIndex = 0;
-    }
-
-    // 通过改变 transform 属性来切换图片
-    const offset = -currentIndex * 100;  // 计算偏移量
-    sliderWrapper.style.transform = `translateX(${offset}%)`;  // 通过平移实现切换
+    slides.forEach((slide, index) => {
+        slide.style.display = index === currentSlide ? 'block' : 'none';
+    });
 }
+
+// 页面加载时默认显示第一张图片
+document.addEventListener('DOMContentLoaded', () => {
+    changeSlide(0);
+});
+
